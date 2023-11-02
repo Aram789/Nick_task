@@ -25,8 +25,6 @@ class MailSendCommand extends Command
      * @var string
      */
     protected $description = 'Command description';
-    protected array $website;
-    protected string $websiteTitle;
 
     /**
      * Execute the console command.
@@ -34,6 +32,7 @@ class MailSendCommand extends Command
     public function handle(): void
     {
         $lastCreatedPosts = Posts::query()->where('last_created', 0)->get();
+
         foreach ($lastCreatedPosts as $post) {
             $website = Website::query()->where('id', $post->websites_id)->first();
             $website->users()->chunk(10, function ($users) use ($website, $post) {

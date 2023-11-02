@@ -12,7 +12,7 @@ class SubscriberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SubscribeRequest $request)
+    public function store(SubscribeRequest $request): SubscriberResource|\Illuminate\Http\JsonResponse
     {
         $validatedData = $request->validated();
 
