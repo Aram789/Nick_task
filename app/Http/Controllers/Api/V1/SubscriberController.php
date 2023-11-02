@@ -12,9 +12,18 @@ class SubscriberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SubscribeRequest $request): SubscriberResource
+    public function store(SubscribeRequest $request)
     {
-        return new SubscriberResource(Subscribers::query()->create($request->validated()));
+        $validatedData = $request->validated();
+
+        $exist = Subscribers::query()->where([
+            'user_id' => $validatedData['user_id'],
+            'websites_id' => $validatedData['websites_id']
+        ])->exists();
+
+        return $exist ?
+            response()->json(['message' => 'Already exist']) :
+            new SubscriberResource(Subscribers::query()->create($validatedData));
     }
 
 }

@@ -18,7 +18,7 @@ class WebsiteFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->url
+            'title' => $this->faker->company
         ];
     }
 }

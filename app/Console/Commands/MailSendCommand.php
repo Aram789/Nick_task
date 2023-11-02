@@ -35,22 +35,19 @@ class MailSendCommand extends Command
     {
         $lastCreatedPosts = Posts::query()->where('last_created', 0)->get();
         foreach ($lastCreatedPosts as $post) {
-            $website = Website::query()->find($post->websites_id);
-            $this->$website = $website;
-            $this->websiteTitle = $website->title;
+            $website = Website::query()->where('id', $post->websites_id)->first();
+            $website->users()->chunk(10, function ($users) use ($website, $post) {
+                foreach ($users as $user) {
+                    $data = [
+                        'web_site_title' => $website->title,
+                        'post_title' => $post->title,
+                        'email' => $user->email
+                    ];
+                    $email = new SendEmailTest($data);
+                    SendEmailJob::dispatch($email);
+                    Posts::query()->where('last_created', 0)->update(['last_created' => 1]);
+                }
+            });
         }
-        $this->$website->users()->chunk(10, function ($users) {
-            foreach ($users as $user) {
-                $data = [
-                    'title' => 'A new entry has been added to the page',
-                    'website_url' => $this->websiteTitle,
-                    'name' => $user->name,
-                    'email' => $user->email
-                ];
-                $email = new SendEmailTest($data);
-                SendEmailJob::dispatch($email);
-                Posts::query()->where('last_created', 0)->update(['last_created' => 1]);
-            }
-        });
     }
 }

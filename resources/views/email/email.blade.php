@@ -1,7 +1,7 @@
 <div>
-    <span> {{$title}}</span> <a href="{{$website_url}}">{{$website_url}}</a>
-    <br>
-    {{$name}}
-    <br>
-    {{$email}}
+    <span> A new entry has been added to the website</span>
+    <div>
+        <p>Website : {{ $web_site_title}}</p>
+        <p>Post : {{ $post_title}}</p>
+    </div>
 </div>
