@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
-use App\Models\Posts;
+use App\Models\Post;
+use App\Models\Website;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 
 class PostController extends Controller
@@ -13,19 +15,20 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function index(): AnonymousResourceCollection
     {
-        return PostResource::collection(Posts::all());
+        return PostResource::collection(Post::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PostRequest $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function store(PostRequest $request): AnonymousResourceCollection
     {
-        Posts::query()->create($request->validated());
 
-        return PostResource::collection(Posts::all());
+        Post::query()->create($request->validated());
+
+        return PostResource::collection(Post::all());
     }
 
 }

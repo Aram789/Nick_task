@@ -23,7 +23,7 @@ class SubscribeRequest extends FormRequest
     {
         return [
             'user_id' => 'required|integer',
-            'websites_id' => 'required|integer'
+            'website_id' => 'required|integer'
         ];
     }
 }

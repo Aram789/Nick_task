@@ -24,7 +24,7 @@ class PostRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'websites_id' => 'required|integer'
+            'website_id' => 'required|integer|exists:website,id'
         ];
     }
 }

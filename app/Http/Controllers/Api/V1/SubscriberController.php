@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubscribeRequest;
 use App\Http\Resources\SubscriberResource;
-use App\Models\Subscribers;
+use App\Models\Subscriber;
+use App\Models\User;
+use App\Models\Website;
+use Illuminate\Http\JsonResponse;
 
 class SubscriberController extends Controller
 {
@@ -16,14 +19,14 @@ class SubscriberController extends Controller
     {
         $validatedData = $request->validated();
 
-        $exist = Subscribers::query()->where([
+        $exist = Subscriber::query()->where([
             'user_id' => $validatedData['user_id'],
-            'websites_id' => $validatedData['websites_id']
+            'website_id' => $validatedData['website_id']
         ])->exists();
 
         return $exist ?
             response()->json(['message' => 'Already exist']) :
-            new SubscriberResource(Subscribers::query()->create($validatedData));
+            new SubscriberResource(Subscriber::query()->create($validatedData));
     }
 
 }

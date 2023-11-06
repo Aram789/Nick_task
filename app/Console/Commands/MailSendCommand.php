@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\SendEmailJob;
 use App\Mail\SendEmailTest;
-use App\Models\Posts;
+use App\Models\Post;
 use App\Models\Website;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -31,10 +31,10 @@ class MailSendCommand extends Command
      */
     public function handle(): void
     {
-        $lastCreatedPosts = Posts::query()->where('last_created', 0)->get();
+        $lastCreatedPosts = Post::query()->where('last_created', 0)->get();
 
         foreach ($lastCreatedPosts as $post) {
-            $website = Website::query()->where('id', $post->websites_id)->first();
+            $website = Website::query()->where('id', $post->website_id)->first();
             $website->users()->chunk(10, function ($users) use ($website, $post) {
                 foreach ($users as $user) {
                     $data = [
@@ -44,7 +44,7 @@ class MailSendCommand extends Command
                     ];
                     $email = new SendEmailTest($data);
                     SendEmailJob::dispatch($email);
-                    Posts::query()->where('last_created', 0)->update(['last_created' => 1]);
+                    Post::query()->where('last_created', 0)->update(['last_created' => 1]);
                 }
             });
         }

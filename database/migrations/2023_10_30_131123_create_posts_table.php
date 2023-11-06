@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->unsignedBigInteger('websites_id');
+            $table->unsignedBigInteger('website_id');
             $table->boolean('last_created')->default(0);
             $table->timestamps();
         });
