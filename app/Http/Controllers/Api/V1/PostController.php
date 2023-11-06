@@ -25,7 +25,6 @@ class PostController extends Controller
      */
     public function store(PostRequest $request): AnonymousResourceCollection
     {
-
         Post::query()->create($request->validated());
 
         return PostResource::collection(Post::all());
