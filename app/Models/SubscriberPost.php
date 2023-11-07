@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubscriberPost extends Model
 {
     protected $fillable = [
-        'website_id',
+        'email',
         'post_id'
     ];
 }

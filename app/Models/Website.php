@@ -15,7 +15,7 @@ class Website extends Model
     ];
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'subscribers', 'website_id', 'email');
+        return $this->belongsToMany(User::class, 'subscribers');
     }
     public function posts(): HasMany
     {

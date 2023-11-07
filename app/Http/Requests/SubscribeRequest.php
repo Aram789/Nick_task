@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class SubscribeRequest extends FormRequest
 {
@@ -24,8 +23,8 @@ class SubscribeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|unique:subscribers,email,NULL,id,website_id,' . $this->input('website_id'),
-            'website_id' => 'required|integer|unique:subscribers,website_id,NULL,id,email,' . $this->input('email'),
+            'user_id' => 'required|integer|unique:subscribers,user_id,NULL,id,website_id,' . $this->input('website_id'),
+            'website_id' => 'required|integer|unique:subscribers,website_id,NULL,id,user_id,' . $this->input('user_id'),
         ];
     }
 }

@@ -17,7 +17,7 @@ class SubscriberController extends Controller
         $validatedData = $request->validated();
 
         $exist = Subscriber::query()->where([
-            'email' => $validatedData['email'],
+            'user_id' => $validatedData['user_id'],
             'website_id' => $validatedData['website_id']
         ])->exists();
 

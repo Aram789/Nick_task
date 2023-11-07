@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('subscribers', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('website_id')->references('id')->on('websites')->onDelete('cascade');
             $table->timestamps();
 
-
-            $table->unique(['email', 'website_id']);
+            $table->unique(['user_id', 'website_id']);
         });
     }
 

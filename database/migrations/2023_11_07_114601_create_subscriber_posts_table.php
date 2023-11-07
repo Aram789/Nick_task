@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('subscriber_posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('website_id')->references('id')->on('websites');
+            $table->string('email');
             $table->foreignId('post_id')->references('id')->on('posts');
             $table->timestamps();
         });

@@ -33,41 +33,31 @@ class MailSendCommand extends Command
      */
     public function handle(): void
     {
-        $websites = Website::all();
 
-        foreach ($websites as $website) {
-            $website->posts()->chunk(10, function ($posts) use ($website) {
+        $websites = Website::with(['posts', 'users'])->get();
 
-                foreach ($posts as $post) {
+        foreach ($websites as $website){
+            $website->users()->chunk(10, function ($users) use ($website) {
+                foreach ($users as $user){
                     $data = [
-                        'website_id' => $post->website_id,
-                        'post_id' => $post->id,
+                        'web_site_title' => $website->title,
+//                            'post_title' => $post->title,
+                        'email' => $user->email
+                    ];
+                    //$email = new SendEmailTest($data);
+                    //SendEmailJob::dispatch($email);
+                    $subscriberPostData = [
+                        'email' => $user->email,
+                        'post_id' => 1
                     ];
 
-                    SubscriberPost::query()->firstOrCreate($data);
-//                    $email = new SendEmailTest($data);
-//                    SendEmailJob::dispatch($data);
+                    SubscriberPost::query()->create($subscriberPostData);
                 }
 
             });
         }
 
 
-//        foreach ($lastCreatedPosts as $post) {
-//            $website = Website::query()->where('id', $post->website_id)->first();
-//
-//            $website->users()->chunk(10, function ($users) use ($website, $post) {
-//                foreach ($users as $user) {
-//                    $data = [
-//                        'web_site_title' => $website->title,
-//                        'post_title' => $post->title,
-//                        'email' => $user->email
-//                    ];
-////                    $email = new SendEmailTest($data);
-////                    SendEmailJob::dispatch($email);
-//                    Post::query()->where('last_created', 0)->update(['last_created' => 1]);
-//                }
-//            });
-//        }
     }
+
 }
