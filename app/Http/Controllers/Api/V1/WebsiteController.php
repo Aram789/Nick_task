@@ -10,7 +10,7 @@ class WebsiteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Database\Eloquent\Collection
+    public function index()
     {
         return Website::all();
     }

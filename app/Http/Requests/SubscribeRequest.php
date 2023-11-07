@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SubscribeRequest extends FormRequest
 {
@@ -17,13 +19,13 @@ class SubscribeRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'user_id' => 'required|integer',
-            'website_id' => 'required|integer'
+            'email' => 'required|email|unique:subscribers,email,NULL,id,website_id,' . $this->input('website_id'),
+            'website_id' => 'required|integer|unique:subscribers,website_id,NULL,id,email,' . $this->input('email'),
         ];
     }
 }

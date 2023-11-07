@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
-use App\Models\Website;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 
@@ -17,7 +16,7 @@ class PostController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return PostResource::collection(Post::all());
+        return PostResource::collection(Post::query()->paginate(15));
     }
 
     /**
@@ -27,7 +26,7 @@ class PostController extends Controller
     {
         Post::query()->create($request->validated());
 
-        return PostResource::collection(Post::all());
+        return PostResource::collection(Post::query()->paginate(15));
     }
 
 }

@@ -6,21 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SubscribeRequest;
 use App\Http\Resources\SubscriberResource;
 use App\Models\Subscriber;
-use App\Models\User;
-use App\Models\Website;
-use Illuminate\Http\JsonResponse;
 
 class SubscriberController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SubscribeRequest $request): SubscriberResource|\Illuminate\Http\JsonResponse
+    public function store(SubscribeRequest $request)
     {
         $validatedData = $request->validated();
 
         $exist = Subscriber::query()->where([
-            'user_id' => $validatedData['user_id'],
+            'email' => $validatedData['email'],
             'website_id' => $validatedData['website_id']
         ])->exists();
 

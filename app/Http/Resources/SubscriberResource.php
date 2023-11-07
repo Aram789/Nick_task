@@ -16,7 +16,7 @@ class SubscriberResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'email' => $this->email,
             'website_id' => $this->website_id,
             'created_at' => $this->created_at
         ];

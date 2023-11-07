@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
-class Subscriber extends Model
+class SubscriberPost extends Model
 {
     protected $fillable = [
-        'email',
-        'website_id'
+        'website_id',
+        'post_id'
     ];
 }

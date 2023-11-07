@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subscriber_post', function (Blueprint $table) {
+        Schema::create('subscriber_posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->string('email');
+            $table->foreignId('website_id')->references('id')->on('websites');
+            $table->foreignId('post_id')->references('id')->on('posts');
             $table->timestamps();
-
-            $table->unique(['post_id', 'email']);
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscriber_post');
+        Schema::dropIfExists('subscriber_posts');
     }
 };
