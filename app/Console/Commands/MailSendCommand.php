@@ -33,11 +33,11 @@ class MailSendCommand extends Command
      */
     public function handle(): void
     {
-
-        $posts = Post::with(['website'])->get();
+        $createdAt = SubscriberPost::query()->orderBy('created_at', 'DESC')->pluck('created_at')->first();
+        $posts = Post::query()->where('created_at', '>=', $createdAt)->get();
 
         foreach ($posts as $post) {
-            $website = Website::query()->where('id', $post->website->id)->first();
+            $website = $post->website;
 
             $website->users()->chunk(10, function ($users) use ($website, $post) {
                 foreach ($users as $user) {
@@ -46,21 +46,15 @@ class MailSendCommand extends Command
                         'post_title' => $post->title,
                         'email' => $user->email
                     ];
-                    $exist = SubscriberPost::query()->where([
-                        'email' => $user->email,
-                        'post_id' => $post->id
-                    ])->exists();
-                    if ($exist) {
-                        return false;
-                    }
+
                     $email = new SendEmailTest($data);
                     SendEmailJob::dispatch($email);
+
                     $subscriberPostData = [
                         'email' => $user->email,
                         'post_id' => $post->id
                     ];
-                    SubscriberPost::query()->insert($subscriberPostData);
-
+                    SubscriberPost::query()->create($subscriberPostData);
                 }
             });
         }
