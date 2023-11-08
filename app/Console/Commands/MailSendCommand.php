@@ -34,29 +34,36 @@ class MailSendCommand extends Command
     public function handle(): void
     {
 
-        $websites = Website::with(['posts', 'users'])->get();
+        $posts = Post::with(['website'])->get();
 
-        foreach ($websites as $website){
-            $website->users()->chunk(10, function ($users) use ($website) {
-                foreach ($users as $user){
+        foreach ($posts as $post) {
+            $website = Website::query()->where('id', $post->website->id)->first();
+
+            $website->users()->chunk(10, function ($users) use ($website, $post) {
+                foreach ($users as $user) {
                     $data = [
                         'web_site_title' => $website->title,
-//                            'post_title' => $post->title,
+                        'post_title' => $post->title,
                         'email' => $user->email
                     ];
-                    //$email = new SendEmailTest($data);
-                    //SendEmailJob::dispatch($email);
+                    $exist = SubscriberPost::query()->where([
+                        'email' => $user->email,
+                        'post_id' => $post->id
+                    ])->exists();
+                    if ($exist) {
+                        return false;
+                    }
+                    $email = new SendEmailTest($data);
+                    SendEmailJob::dispatch($email);
                     $subscriberPostData = [
                         'email' => $user->email,
-                        'post_id' => 1
+                        'post_id' => $post->id
                     ];
+                    SubscriberPost::query()->insert($subscriberPostData);
 
-                    SubscriberPost::query()->create($subscriberPostData);
                 }
-
             });
         }
-
 
     }
 

@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('email');
             $table->foreignId('post_id')->references('id')->on('posts');
             $table->timestamps();
+
+            $table->unique(['email', 'post_id']);
         });
+
     }
 
     /**
