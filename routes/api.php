@@ -2,7 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use \App\Http\Controllers\Api\V1\WebsiteController;
+use \App\Http\Controllers\Api\V1\SubscriberController;
+use \App\Http\Controllers\Api\V1\PostController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/', \App\Http\Controllers\Api\V1\WebsiteController::class);
-Route::apiResource('/subscriber', \App\Http\Controllers\Api\V1\SubscriberController::class);
-Route::apiResource('/posts', \App\Http\Controllers\Api\V1\PostController::class);
+Route::apiResource('/', WebsiteController::class);
+Route::apiResource('/subscriber', SubscriberController::class);
+Route::apiResource('/posts', PostController::class);

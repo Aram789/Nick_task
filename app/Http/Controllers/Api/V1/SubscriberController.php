@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SubscribeRequest;
+use App\Http\Requests\SubscriberRequest;
 use App\Http\Resources\SubscriberResource;
 use App\Models\Subscriber;
 
@@ -12,7 +12,7 @@ class SubscriberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SubscribeRequest $request)
+    public function store(SubscriberRequest $request)
     {
         $validatedData = $request->validated();
 

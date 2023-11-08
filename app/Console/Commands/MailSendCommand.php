@@ -5,11 +5,9 @@ namespace App\Console\Commands;
 use App\Jobs\SendEmailJob;
 use App\Mail\SendEmailTest;
 use App\Models\Post;
-use App\Models\Subscriber;
 use App\Models\SubscriberPost;
 use App\Models\Website;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class MailSendCommand extends Command
 {
@@ -34,11 +32,15 @@ class MailSendCommand extends Command
     public function handle(): void
     {
         $createdAt = SubscriberPost::query()->orderBy('created_at', 'DESC')->pluck('created_at')->first();
-        $posts = Post::query()->where('created_at', '>=', $createdAt)->get();
+
+        if (isset($createdAt)) {
+            $posts = Post::query()->where('created_at', '>=', $createdAt)->get();
+        } else {
+            $posts = Post::query()->get();
+        }
 
         foreach ($posts as $post) {
             $website = $post->website;
-
             $website->users()->chunk(10, function ($users) use ($website, $post) {
                 foreach ($users as $user) {
                     $data = [
@@ -58,7 +60,5 @@ class MailSendCommand extends Command
                 }
             });
         }
-
     }
-
 }

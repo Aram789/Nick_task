@@ -17,9 +17,4 @@ class Website extends Model
     {
         return $this->belongsToMany(User::class, 'subscribers');
     }
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
-
 }

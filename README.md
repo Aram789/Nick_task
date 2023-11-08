@@ -69,7 +69,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 field:user_id
 
-field:websites_id
+field:website_id
 
 ## Created Post
 
@@ -77,12 +77,13 @@ field:title
 
 field:description
 
-field:websites_id
-
-change last_created 0-1 field database
+field:website_id
 
 ## Run Schedule
 
-php artisan schedule:list
+php artisan schedule:work
+
+php artisan app:mail-send-command
+
 
 
