@@ -6,7 +6,6 @@ use App\Jobs\SendEmailJob;
 use App\Mail\SendEmailTest;
 use App\Models\Post;
 use App\Models\SubscriberPost;
-use App\Models\Website;
 use Illuminate\Console\Command;
 
 class MailSendCommand extends Command
@@ -31,8 +30,10 @@ class MailSendCommand extends Command
      */
     public function handle(): void
     {
+        // Retrieve the timestamp of the latest post creation.
         $createdAt = SubscriberPost::query()->orderBy('created_at', 'DESC')->pluck('created_at')->first();
 
+        // Check if there's a timestamp, then fetch posts accordingly.
         if (isset($createdAt)) {
             $posts = Post::query()->where('created_at', '>=', $createdAt)->get();
         } else {
